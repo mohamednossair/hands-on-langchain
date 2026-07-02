@@ -1,0 +1,6 @@
+.env
+__pycache__/
+.ipynb_checkpoints/
+chroma_db/
+*.faiss
+.DS_Store
