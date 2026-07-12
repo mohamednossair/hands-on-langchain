@@ -2,6 +2,10 @@
 
 Companion code for the book **[_Hands-On LangChain: Build LLM Applications and AI Agents with LangChain, LangGraph, LangMem, and LangSmith_](youssefhosni.gumroad.com/l/fowkx)** by **Youssef Hosni**.
 
+<img width="1049" height="1499" alt="Back" src="https://github.com/user-attachments/assets/50ab8ebf-e4fa-4dad-8e58-5b4e59d3d5b5" />
+<img width="1049" height="1499" alt="Front" src="https://github.com/user-attachments/assets/0e7d1087-51f7-4ad8-81e5-0965bff9ec32" />
+
+
 Every chapter that contains code has a runnable Jupyter notebook here. The outputs shown in the book were produced by running these notebooks against **LangChain 1.x**.
 
 ## Setup
