@@ -1,6 +1,6 @@
 # Hands-On LangChain — Notebooks
 
-Companion code for the book **_Hands-On LangChain: Developing Large Language Model Applications with LangChain_** by **Youssef Hosni**.
+Companion code for the book **_Hands-On LangChain: Build LLM Applications and AI Agents with LangChain, LangGraph, LangMem, and LangSmith_** by **Youssef Hosni**.
 
 Every chapter that contains code has a runnable Jupyter notebook here. The outputs shown in the book were produced by running these notebooks against **LangChain 1.x**.
 
