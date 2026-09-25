@@ -20,25 +20,34 @@ Every chapter that contains code has a runnable Jupyter notebook here. The outpu
 
 ## Setup
 
-```bash
-# 1. Install dependencies
-pip install --upgrade langchain langchain-openai langchain-community \
-    langchain-text-splitters langgraph langmem langchain-classic \
-    langsmith pydantic openai tiktoken chromadb faiss-cpu pypdf \
-    ddgs docx2txt "unstructured[xlsx]" beautifulsoup4 python-dotenv jupyter -q
+Install [Ollama](https://ollama.com/download), start its local service, and pull the chat and embedding models used by default:
 
-# 2. Configure your keys
-cp .env.example .env      # then edit .env and add your OPENAI_API_KEY
+```bash
+ollama pull qwen2.5:7b
+ollama pull nomic-embed-text
 ```
 
-At minimum you need `OPENAI_API_KEY`. The web-search examples (Part III) use **DuckDuckGo**, which needs no key. The LangSmith chapters (Part V) require a free `LANGSMITH_API_KEY` from [smith.langchain.com](https://smith.langchain.com).
+Then install the Python dependencies and configure the environment:
+
+```bash
+pip install --upgrade langchain langchain-ollama langchain-community \
+    langchain-text-splitters langgraph langmem langchain-classic \
+    langsmith pydantic tiktoken chromadb faiss-cpu pypdf \
+    ddgs docx2txt "unstructured[xlsx]" beautifulsoup4 python-dotenv jupyter -q
+
+cp .env.example .env
+```
+
+No model-provider API key is required. The web-search examples (Part III) use **DuckDuckGo**, which needs no key. The LangSmith chapters (Part V) optionally use a `LANGSMITH_API_KEY` from [smith.langchain.com](https://smith.langchain.com).
 
 The book uses a single chat model and embedding model, set in `.env`:
 
 ```
-MODEL=gpt-5.4-mini
-EMBEDDING_MODEL=text-embedding-3-small
+MODEL=qwen2.5:7b
+EMBEDDING_MODEL=nomic-embed-text
 ```
+
+Set `OLLAMA_BASE_URL` in `.env` if Ollama is not available at its default `http://localhost:11434`. Use a chat model that supports tool calling and structured outputs for the agent and parsing examples. If you change the embedding model, rebuild notebook-created vector stores because embedding dimensions may differ.
 
 Then open any notebook and run it top to bottom.
 
@@ -66,7 +75,7 @@ Then open any notebook and run it top to bottom.
 | 22 · Tracing with LangSmith | `notebooks/22-tracing-with-langsmith.ipynb` |
 | 23 · Playground & Prompts Hub | `notebooks/23-playground-and-prompts-hub.ipynb` |
 
-`notebooks/prompts.py` holds the shared prompt templates used by the LangMem chapters (17–20). Sample data for the RAG and loader chapters is in `data/`.
+`notebooks/prompts.py` holds the shared prompt templates used by the LangMem chapters (17–20), and `notebooks/model_provider.py` holds the shared Ollama chat/embedding configuration. Sample data for the RAG and loader chapters is in `data/`.
 
 *(Chapters 1, 10, 16, and 21 are conceptual and have no notebook.)*
 
