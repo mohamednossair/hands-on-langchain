@@ -20,34 +20,33 @@ Every chapter that contains code has a runnable Jupyter notebook here. The outpu
 
 ## Setup
 
-Install [Ollama](https://ollama.com/download), start its local service, and pull the chat and embedding models used by default:
+Install [Ollama](https://ollama.com/download), start its local service, and pull the embedding model. Pull the default Ollama chat model too if you want to use Ollama for chat:
 
 ```bash
-ollama pull qwen2.5:7b
 ollama pull nomic-embed-text
+ollama pull qwen2.5:7b
 ```
 
 Then install the Python dependencies and configure the environment:
 
 ```bash
-pip install --upgrade langchain langchain-ollama langchain-community \
+pip install --upgrade langchain langchain-ollama langchain-groq ollama groq langchain-community \
     langchain-text-splitters langgraph langmem langchain-classic \
     langsmith pydantic tiktoken chromadb faiss-cpu pypdf \
     ddgs docx2txt "unstructured[xlsx]" beautifulsoup4 python-dotenv jupyter -q
 
-cp .env.example .env
+cp .env.ollama.example .env
 ```
 
-No model-provider API key is required. The web-search examples (Part III) use **DuckDuckGo**, which needs no key. The LangSmith chapters (Part V) optionally use a `LANGSMITH_API_KEY` from [smith.langchain.com](https://smith.langchain.com).
+The command above selects Ollama for chat. To use Groq instead, copy its template to `.env`:
 
-The book uses a single chat model and embedding model, set in `.env`:
-
-```
-MODEL=qwen2.5:7b
-EMBEDDING_MODEL=nomic-embed-text
+```bash
+cp .env.groq.example .env
 ```
 
-Set `OLLAMA_BASE_URL` in `.env` if Ollama is not available at its default `http://localhost:11434`. Use a chat model that supports tool calling and structured outputs for the agent and parsing examples. If you change the embedding model, rebuild notebook-created vector stores because embedding dimensions may differ.
+The notebooks load configuration from `.env` only. To switch providers, copy the other template over `.env` (replacing the current configuration). Groq chat requires a `GROQ_API_KEY` from [console.groq.com/keys](https://console.groq.com/keys); add your key to `.env` only. `.env` is ignored by Git, so do not put a real key in either tracked template. The web-search examples use **DuckDuckGo**, which needs no key. The LangSmith chapters optionally use a `LANGSMITH_API_KEY` from [smith.langchain.com](https://smith.langchain.com).
+
+Each template configures its provider's chat model and the shared Ollama embedding model. Ollama chat requires no API key. Ollama is still required for embeddings, so keep its service running and pull `nomic-embed-text` even when Groq is selected for chat. `MODEL=qwen2.5:7b` remains supported as a legacy alias for `OLLAMA_MODEL`. Set `OLLAMA_BASE_URL` if Ollama is not available at its default `http://localhost:11434`. If you change the embedding model, rebuild notebook-created vector stores because embedding dimensions may differ.
 
 Then open any notebook and run it top to bottom.
 
@@ -75,7 +74,7 @@ Then open any notebook and run it top to bottom.
 | 22 · Tracing with LangSmith | `notebooks/22-tracing-with-langsmith.ipynb` |
 | 23 · Playground & Prompts Hub | `notebooks/23-playground-and-prompts-hub.ipynb` |
 
-`notebooks/prompts.py` holds the shared prompt templates used by the LangMem chapters (17–20), and `notebooks/model_provider.py` holds the shared Ollama chat/embedding configuration. Sample data for the RAG and loader chapters is in `data/`.
+`notebooks/prompts.py` holds the shared prompt templates used by the LangMem chapters (17–20), and `notebooks/model_provider.py` holds the shared selectable chat-provider and Ollama embedding configuration. Sample data for the RAG and loader chapters is in `data/`.
 
 *(Chapters 1, 10, 16, and 21 are conceptual and have no notebook.)*
 
