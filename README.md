@@ -20,14 +20,7 @@ Every chapter that contains code has a runnable Jupyter notebook here. The outpu
 
 ## Setup
 
-Install [Ollama](https://ollama.com/download), start its local service, and pull the embedding model. Pull the default Ollama chat model too if you want to use Ollama for chat:
-
-```bash
-ollama pull nomic-embed-text
-ollama pull qwen2.5:7b
-```
-
-Then install the Python dependencies and configure the environment:
+Install the Python dependencies and configure the environment:
 
 ```bash
 pip install --upgrade langchain langchain-ollama langchain-groq ollama groq langchain-community \
@@ -38,6 +31,14 @@ pip install --upgrade langchain langchain-ollama langchain-groq ollama groq lang
 cp .env.ollama.example .env
 ```
 
+The notebooks now use **sentence-transformers** for local CPU-friendly embeddings (model: `sentence-transformers/all-mpnet-base-v2`, 768 dimensions), which works well with Solr and doesn't require Ollama for embeddings.
+
+If you want to use Ollama for chat models, install [Ollama](https://ollama.com/download), start its local service, and pull the chat model:
+
+```bash
+ollama pull qwen2.5:7b
+```
+
 The command above selects Ollama for chat. To use Groq instead, copy its template to `.env`:
 
 ```bash
@@ -46,7 +47,7 @@ cp .env.groq.example .env
 
 The notebooks load configuration from `.env` only. To switch providers, copy the other template over `.env` (replacing the current configuration). Groq chat requires a `GROQ_API_KEY` from [console.groq.com/keys](https://console.groq.com/keys); add your key to `.env` only. `.env` is ignored by Git, so do not put a real key in either tracked template. The web-search examples use **DuckDuckGo**, which needs no key. The LangSmith chapters optionally use a `LANGSMITH_API_KEY` from [smith.langchain.com](https://smith.langchain.com).
 
-Each template configures its provider's chat model and the shared Ollama embedding model. Ollama chat requires no API key. Ollama is still required for embeddings, so keep its service running and pull `nomic-embed-text` even when Groq is selected for chat. `MODEL=qwen2.5:7b` remains supported as a legacy alias for `OLLAMA_MODEL`. Set `OLLAMA_BASE_URL` if Ollama is not available at its default `http://localhost:11434`. If you change the embedding model, rebuild notebook-created vector stores because embedding dimensions may differ.
+Each template configures its provider's chat model. The notebooks use sentence-transformers for embeddings locally (no API key required). Ollama chat requires no API key. `MODEL=qwen2.5:7b` remains supported as a legacy alias for `OLLAMA_MODEL`. Set `OLLAMA_BASE_URL` if Ollama is not available at its default `http://localhost:11434`. The embedding model is fixed to `sentence-transformers/all-mpnet-base-v2` (768 dimensions) for Solr compatibility.
 
 Then open any notebook and run it top to bottom.
 
